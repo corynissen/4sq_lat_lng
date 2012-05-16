@@ -14,7 +14,7 @@ getLatLng <- function(link, short=TRUE){
   checkinid <- substring(url, regexpr("checkin", url)+8, nchar(url))
   checkinid <- substring(checkinid, 1, regexpr("?s", checkinid)-2)
   signature <- substring(url, regexpr("?s=", url)+2, nchar(url))
-  signature <- substring(signature, 1, regexpr("&amp", signature)-1)
+  signature <- substring(signature, 1, regexpr("&", signature)-1)
   
   # format api request url
   oauthtoken <- "10GFIIMZR3NN2H24IP24ITTEWVH1LJGWXLTFU0LRDHPVI1KR"
@@ -32,8 +32,8 @@ getLatLng <- function(link, short=TRUE){
 }
 
 # try it out...
-smallsamp <- "http://4sq.com/L2bCrr"
-bigsamp <- "https://foursquare.com/espn/checkin/4fb1bcc1bb3df829dca6e73a?s=MRLHnbPrJecxRcYNuF8AG5ZCsKQ&ref=tw"
+# smallsamp <- "http://4sq.com/L2bCrr"
+# bigsamp <- "https://foursquare.com/espn/checkin/4fb1bcc1bb3df829dca6e73a?s=MRLHnbPrJecxRcYNuF8AG5ZCsKQ&ref=tw"
 
-getLatLng(smallsamp)
-getLatLng(bigsamp, short=FALSE)
+# getLatLng(smallsamp)
+# getLatLng(bigsamp, short=FALSE)
