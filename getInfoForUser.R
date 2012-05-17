@@ -18,10 +18,7 @@ getLongURL <- function(shorturl){
   return(apidata$end_url)
 }
 
-getLatLngs <- function(username, n=100){
-  # I have saved OAuth creds for twitter, to use this, you'll have to get your own.
-  load("/media/windrive/chicago/tweets/autoresponder/cred.Rdata")
-  registerTwitterOAuth(cred)  
+getLatLngs <- function(username, n=100){  
   tl_list <- userTimeline(username, n=n)
   tl <- sapply(tl_list, "[[", "text")
   
