@@ -12,14 +12,14 @@ getMaxMins <- function(latlngs){
   return(list(minlat=minlat, maxlat=maxlat, minlng=minlng, maxlng=maxlng))
 }
 
-addPoint <- function(latlngList){
+addPoint <- function(latlngList, size=2, colour="red"){
   df <- data.frame(lat=latlngList$lat, lng=latlngList$lng)
-  return(geom_point(data=df, aes(lng, lat), colour="red", size=2))
+  return(geom_point(data=df, aes(lng, lat), colour=colour, size=size))
 }
 
 makeGraph <- function(latlngs, zoom=3){
   w <- getMaxMins(latlngs)
-  world<-map_data("usa")
+  world<-maps::map("usa")
   p <- ggplot(legend=FALSE) +
     geom_polygon( data=world, aes(x=long, y=lat,group=group)) +
       opts(panel.background = theme_blank()) +
