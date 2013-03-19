@@ -18,4 +18,5 @@ clusterCenter <- getClusterCenter(latlngs)
 
 # see the latlngs on a map...
 # make sure latlngs isn't empty for the username you've chosen
-makeGraph(latlngs, zoom=3) + addPoint(clusterCenter, size=3, colour="blue")
+makeGraph(latlngs, zoom=1) + addPoint(clusterCenter, size=3, colour="blue")
+ggsave("michaelmcgee_cluster_center.png")
