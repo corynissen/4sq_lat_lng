@@ -1,6 +1,9 @@
 
+Sys.setenv(NOAWT=1) #call this before loading OpenStreetMap
 library(maps)
 library(ggplot2)
+library(OpenStreetMap)
+library(rgdal)
 
 getMaxMins <- function(latlngs){
   # returns the min and max lat and lng
@@ -13,21 +16,31 @@ getMaxMins <- function(latlngs){
 }
 
 addPoint <- function(latlngList, size=2, colour="red"){
-  df <- data.frame(lat=latlngList$lat, lng=latlngList$lng)
-  return(geom_point(data=df, aes(lng, lat), colour=colour, size=size))
+  proj.merc <- projectMercator(latlngList$lat, latlngList$lng)
+  df <- data.frame(x=proj.merc["x"], y=proj.merc["y"])
+  return(geom_point(data=df, aes(x, y), colour=colour, size=size))
 }
 
-makeGraph <- function(latlngs, zoom=3){
+makeGraph <- function(latlngs, zoom=2){
   w <- getMaxMins(latlngs)
-  world<-maps::map("usa")
-  p <- ggplot(legend=FALSE) +
-    geom_polygon( data=world, aes(x=long, y=lat,group=group)) +
-      opts(panel.background = theme_blank()) +
-        opts(panel.grid.major = theme_blank()) +
-          opts(panel.grid.minor = theme_blank()) +
-            opts(axis.text.x = theme_blank(),axis.text.y = theme_blank()) +
-              opts(axis.ticks = theme_blank()) +
-                xlab("") + ylab("") + coord_cartesian(xlim=c(w$minlng-zoom, w$maxlng+zoom), ylim=c(w$minlat-zoom, w$maxlat+zoom))
+  w.merc.min <- projectMercator(w$minlat, w$minlng)
+  w.merc.max <- projectMercator(w$maxlat, w$maxlng)
+  w.merc <- list(minx=w.merc.min["x"], miny=w.merc.min["y"],
+                 maxx=w.merc.max["x"], maxy=w.merc.max["y"])
+  #world<-maps::map("usa")
+  my.theme <- theme(panel.background = element_blank(),
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   axis.text.x = element_blank(),
+                   axis.text.y = element_blank(),
+                   axis.ticks = element_blank())
+  zoom <- zoom / 10
+  mp <- openmap(c(w$minlat-zoom,w$maxlng+zoom), c(w$maxlat+zoom,w$minlng-zoom),
+                type="osm")
+  p <- autoplot(mp) +
+       my.theme +
+       xlab("") +
+       ylab("")
   for(i in 1:length(latlngs)){
     if(!is.null(latlngs[[i]]$lat)){
       p <- p + addPoint(latlngs[[i]])
