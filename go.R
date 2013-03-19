@@ -3,7 +3,10 @@
 
 source("getLatLng.R")
 source("getInfoForUser.R")
+source("clusterLatLng.R")
 source("plotLatLngs.R")
+load("cred.Rdata")
+registerTwitterOAuth(cred)
 
 # sample username...
 username <- "michaelmcgee"
