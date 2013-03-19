@@ -17,7 +17,7 @@ getLatLng <- function(link, short=TRUE){
   signature <- substring(signature, 1, regexpr("&", signature)-1)
   
   # format api request url
-  oauthtoken <- "10GFIIMZR3NN2H24IP24ITTEWVH1LJGWXLTFU0LRDHPVI1KR"
+  oauthtoken <- scan("4sq_oauth_token", quiet=T, what="character")
   datecode <- gsub("-", "", Sys.Date())
   apiurl <- paste("https://api.foursquare.com/v2/checkins/", checkinid,
                   "?signature=", signature, "&oauth_token=", oauthtoken,
@@ -30,10 +30,3 @@ getLatLng <- function(link, short=TRUE){
   lng <- foursqdata$response$checkin$venue$location$lng
   return(list(lat=lat, lng=lng))
 }
-
-# try it out...
-# smallsamp <- "http://4sq.com/L2bCrr"
-# bigsamp <- "https://foursquare.com/espn/checkin/4fb1bcc1bb3df829dca6e73a?s=MRLHnbPrJecxRcYNuF8AG5ZCsKQ&ref=tw"
-
-# getLatLng(smallsamp)
-# getLatLng(bigsamp, short=FALSE)
