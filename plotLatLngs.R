@@ -15,7 +15,7 @@ getMaxMins <- function(latlngs){
   return(list(minlat=minlat, maxlat=maxlat, minlng=minlng, maxlng=maxlng))
 }
 
-addPoint <- function(latlngList, size=2, colour="red"){
+addPoint <- function(latlngList, size=1, colour="red"){
   proj.merc <- projectMercator(latlngList$lat, latlngList$lng)
   df <- data.frame(x=proj.merc["x"], y=proj.merc["y"])
   return(geom_point(data=df, aes(x, y), colour=colour, size=size))
